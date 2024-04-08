@@ -1,3 +1,4 @@
+import { useState, useEffect, Component } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,16 +15,10 @@ import {
   Modal,
   Linking,
 } from "react-native";
-import { useState, useEffect, Component } from "react";
-import HTML, { buildTREFromConfig } from "react-native-render-html";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import Header from "./components/Header";
 export default function App() {
   const { width } = useWindowDimensions();
   const [name, setName] = useState("");
   const [postList, setPostList] = useState([]);
-  const [showPanel, setShowPanel] = useState(false);
-
   const fetchData = async () => {
     try {
       console.log(name);
@@ -60,18 +55,8 @@ export default function App() {
     setName(text);
     //console.log(text);
   };
-  const handleFindHospitalsPress = () => {
-    const url = "https://www.google.com/maps/search/hospitals/";
-    Linking.openURL(url);
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
-      <ImageBackground
-        source={require("./assets/doc.jpg")} // Replace './yourBackgroundImage.png' with the path to your background image
-        style={styles.backgroundImage}
-      />
-      <Header></Header>
+    <SafeAreaView>
       <View style={styles.topBar}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -108,15 +93,6 @@ export default function App() {
             );
           }}
         />
-        <View style={styles.gmap}>
-          <Button
-            title="Find Nearest Hospitals"
-            color="#D70040"
-            onPress={handleFindHospitalsPress}
-          />
-          <Image source={require("./assets/map.png")} style={styles.image} />
-        </View>
-        {/* <MapView style={styles.map} provider={PROVIDER_GOOGLE} /> */}
       </View>
     </SafeAreaView>
   );
