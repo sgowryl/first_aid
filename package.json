@@ -9,9 +9,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-voice/voice": "^3.2.4",
+    "axios": "^1.6.8",
     "expo": "~50.0.14",
+    "expo-av": "~13.10.5",
+    "expo-permissions": "^14.4.0",
+    "expo-speech": "~11.7.0",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
+    "react-instantsearch-native": "^6.40.4",
     "react-native": "0.73.6",
     "react-native-maps": "^1.13.0",
     "react-native-render-html": "^6.3.4"
