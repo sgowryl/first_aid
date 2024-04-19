@@ -9,17 +9,35 @@ import {
   Linking,
 } from "react-native";
 import { useState } from "react";
+
 export default function Header() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const [isFontTab, setIsFontTab] = useState(false);
   const callNumber = (phoneNumber) => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
+
   return (
     <View style={styles.header}>
+      <TouchableOpacity
+        style={styles.fontButton}
+        onPress={() => setIsFontTab(true)}
+      >
+        <Image
+          source={require("../assets/font-size.png")}
+          style={styles.fontImage}
+        />
+      </TouchableOpacity>
+      <Modal
+        visible={isFontTab}
+        onRequestClose={() => setIsFontTab(false)}
+        animationType="slide"
+        presentationStyle="pageSheet"
+      ></Modal>
+
       <Text style={styles.headerText}>QUICK AID</Text>
       <TouchableOpacity
-        style={styles.sidePanelButton}
+        style={styles.menuIconContainer}
         onPress={() => setIsModalVisible(true)}
       >
         <Image source={require("../assets/call.png")} style={styles.menuIcon} />
@@ -70,13 +88,42 @@ export default function Header() {
 }
 
 const styles = StyleSheet.create({
-  sidePanelButton: {
-    position: "absolute",
-    bottom: 10,
-    right: 20,
-    zIndex: 1,
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 100,
+    marginTop: -50,
+    backgroundColor: "#6495ED",
+    //babyblue: 89CFF0
+    justifyContent: "center",
   },
-
+  headerText: {
+    fontSize: 25,
+    color: "#13274F",
+    marginTop: 40,
+  },
+  menuIconContainer: {
+    position: "absolute",
+    right: 20,
+  },
+  fontImage: {
+    width: 25,
+    height: 25,
+    marginTop: 30,
+    marginLeft: -100,
+  },
+  menuIcon: {
+    width: 25,
+    height: 25,
+    marginTop: 30,
+  },
+  sidePanel: {
+    flex: 1,
+    backgroundColor: "#B6D0E2",
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
   optionButtonText: {
     backgroundColor: "white",
     marginTop: 2,
@@ -88,41 +135,11 @@ const styles = StyleSheet.create({
     alignContent: "center",
     color: "#000080",
   },
-
-  header: {
-    height: 100,
-    marginTop: -60,
-    backgroundColor: "#6495ED",
-    //babyblue: 89CFF0
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerText: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 50,
-    fontSize: 25,
-    color: "#13274F",
-  },
-  sidePanel: {
-    flex: 1,
-    backgroundColor: "#B6D0E2",
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-  },
-
   optionButton: {
     marginVertical: 20,
     margin: 10,
     borderWidth: 2,
     borderRadius: 10,
     borderColor: "white",
-  },
-  menuIcon: {
-    marginTop: 20,
-    marginLeft: 10,
-    width: 30,
-    height: 30,
   },
 });
