@@ -8,6 +8,7 @@ import {
   Image,
   useWindowDimensions,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import HTML, { buildTREFromConfig } from "react-native-render-html";
@@ -5162,6 +5163,10 @@ export default function DropDownComponent() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 3,
+    paddingTop: StatusBar.currentHeight,
+  },
   dropcontainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -5205,8 +5210,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     fontFamily: "Georgia",
     padding: 20,
-
-    marginBottom: 10,
   },
   titleText: {
     fontSize: 30,

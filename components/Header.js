@@ -7,6 +7,9 @@ import {
   Modal,
   Image,
   Linking,
+  TextInput,
+  StatusBar,
+  SafeAreaView,
 } from "react-native";
 import { useState } from "react";
 
@@ -16,7 +19,15 @@ export default function Header() {
   const callNumber = (phoneNumber) => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
-
+  const handleFontSizeChange = () => {
+    // Convert input value to a number
+    const newSize = parseFloat(fontSize);
+    if (!isNaN(newSize)) {
+      setIsFontTab(false); // Close the font size input
+      // Update the font size state
+      setFontSize(newSize);
+    }
+  };
   return (
     <View style={styles.header}>
       <TouchableOpacity
@@ -33,7 +44,21 @@ export default function Header() {
         onRequestClose={() => setIsFontTab(false)}
         animationType="slide"
         presentationStyle="pageSheet"
-      ></Modal>
+      >
+        <View style={styles.sidePanel}>
+          <Button
+            title="CLOSE"
+            color="black"
+            fontWeight="bold"
+            onPress={() => setIsFontTab(false)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="What is your Emergency?"
+            placeholderTextColor="black"
+          />
+        </View>
+      </Modal>
 
       <Text style={styles.headerText}>QUICK AID</Text>
       <TouchableOpacity
