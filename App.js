@@ -87,26 +87,6 @@ export default function App() {
       />
       <Header></Header>
       <DropDownComponent onChange={handleDropDownChange} />
-      <View style={styles.topBar}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={handleInputChange}
-            defaultValue={name}
-            //onChangeText={(newText) => setName(newText)}
-            //defaultValue={name}
-            placeholder="What is your Emergency?"
-            placeholderTextColor="black"
-          />
-          <TouchableOpacity onPress={() => fetchData()} style={styles.button}>
-            <Image
-              source={require("./assets/send.png")}
-              style={styles.buttonImage}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
 
       <View style={styles.listContainer}>
         <FlatList
@@ -202,23 +182,6 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 30,
     color: "#00008B",
-  },
-  voiceButton: {
-    backgroundColor: "#48C9B0",
-    paddingVertical: 20,
-    width: "90%",
-    alignItems: "center",
-    borderRadius: 5,
-    marginTop: 20,
-  },
-  voicetext: {
-    color: "black",
-    fontSize: 30,
-  },
-  voicecontainer: {
-    marginTop: 40,
-    backgroundColor: "#fff",
-    alignItems: "center",
   },
   button: {
     borderRadius: 5,

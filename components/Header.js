@@ -11,17 +11,12 @@ import {
 import { useState } from "react";
 export default function Header() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+
   const callNumber = (phoneNumber) => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
   return (
     <View style={styles.header}>
-      <TouchableOpacity
-        style={styles.sidePanelButton}
-        onPress={() => setIsModalVisible(true)}
-      >
-        <Image source={require("../assets/call.png")} style={styles.menuIcon} />
-      </TouchableOpacity>
       <Text style={styles.headerText}>QUICK AID</Text>
       <TouchableOpacity
         style={styles.sidePanelButton}
