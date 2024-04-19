@@ -131,10 +131,10 @@ export default function App() {
               color="#D70040"
               onPress={handleFindHospitalsPress}
             />
-            {/* <Image
+            <Image
               source={require("./assets/hospital-building.png")}
               style={styles.image}
-            /> */}
+            />
           </View>
           <View style={styles.buttonandImage}>
             <Button
@@ -142,10 +142,10 @@ export default function App() {
               color="#D70040"
               onPress={handleFindEmergencyPress}
             />
-            {/* <Image
+            <Image
               source={require("./assets/ambulance.png")}
               style={styles.image}
-            /> */}
+            />
           </View>
         </View>
       </View>
@@ -243,20 +243,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#87CEFA",
+    backgroundColor: "white",
   },
   buttonandImage: {
+    flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 10,
-    borderColor: "black",
-    borderRadius: 2,
   },
   image: {
-    alignItems: "center",
-    justifyContent: "center",
     width: 24,
     height: 24,
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 10,
+    marginLeft: 5,
   },
 });

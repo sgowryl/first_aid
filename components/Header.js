@@ -16,6 +16,12 @@ export default function Header() {
   };
   return (
     <View style={styles.header}>
+      <TouchableOpacity
+        style={styles.sidePanelButton}
+        onPress={() => setIsModalVisible(true)}
+      >
+        <Image source={require("../assets/call.png")} style={styles.menuIcon} />
+      </TouchableOpacity>
       <Text style={styles.headerText}>QUICK AID</Text>
       <TouchableOpacity
         style={styles.sidePanelButton}

@@ -5047,6 +5047,7 @@ const data = [
 
 export default function DropDownComponent() {
   const [value, setValue] = useState(null);
+  console.log(value);
   const [isFocus, setIsFocus] = useState(false);
 
   return (
