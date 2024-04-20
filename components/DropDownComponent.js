@@ -13,6 +13,7 @@ import {
 import { Dropdown } from "react-native-element-dropdown";
 import HTML, { buildTREFromConfig } from "react-native-render-html";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useFontSize } from "../Context/FontSizeContext";
 
 const data = [
   {
@@ -826,7 +827,8 @@ const data = [
   },
   {
     label: "203",
-    value: "Cardiac catheterisation and coronary angiography",
+    value:
+      "Card, fontSize=fontSizeiac catheterisation and coronary angiography",
   },
   {
     label: "204",
@@ -5061,14 +5063,15 @@ export default function DropDownComponent() {
   const { width } = useWindowDimensions();
   const [postList, setPostList] = useState([]);
   const [name, setName] = useState("");
-  //console.log(value);
+
+  const { fontSize } = useFontSize();
+
   const [isFocus, setIsFocus] = useState(false);
   useEffect(() => {
     if (value !== "") {
       fetchData();
     }
   }, [value]);
-
   const fetchData = async () => {
     try {
       console.log(value);
@@ -5079,6 +5082,7 @@ export default function DropDownComponent() {
       });
       //const data = await response.json();
       const result = await response.json();
+      console.log(fontSize);
       const data = result.mainEntityOfPage;
       const headlines = data.map((el) => el.headline);
       const data1 = data.map((el) => el.mainEntityOfPage);
@@ -5145,7 +5149,17 @@ export default function DropDownComponent() {
             data={postList}
             renderItem={({ item }) => {
               return (
-                <View style={styles.card}>
+                <View
+                  style={{
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    marginTop: 5,
+                    backgroundColor: "white",
+                    fontFamily: "Georgia",
+                    padding: 20,
+                    //fontSize: fontSize,
+                  }}
+                >
                   <Text style={styles.titleText}>{item.headline}</Text>
                   {item.text ? (
                     <HTML source={{ html: item.text }} contentWidth={width} />
@@ -5203,14 +5217,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     flex: 1,
   },
-  card: {
-    borderRadius: 10,
-    borderWidth: 1,
-    marginTop: 5,
-    backgroundColor: "white",
-    fontFamily: "Georgia",
-    padding: 20,
-  },
+
   titleText: {
     fontSize: 30,
     color: "#00008B",

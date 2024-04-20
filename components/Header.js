@@ -12,22 +12,30 @@ import {
   SafeAreaView,
 } from "react-native";
 import { useState } from "react";
+import DropDownComponent from "./DropDownComponent";
+import { useFontSize } from "../Context/FontSizeContext";
 
 export default function Header() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isFontTab, setIsFontTab] = useState(false);
+  const { setFontSize } = useFontSize();
+
+  const changeFontSize = (newFontSize) => {
+    setFontSize(newFontSize);
+    console.log(newFontSize);
+  };
+  //const [fontSize, setFontSize] = useState(16);
+  const [font, setFont] = useState(16);
   const callNumber = (phoneNumber) => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
-  const handleFontSizeChange = () => {
-    // Convert input value to a number
-    const newSize = parseFloat(fontSize);
-    if (!isNaN(newSize)) {
-      setIsFontTab(false); // Close the font size input
-      // Update the font size state
-      setFontSize(newSize);
-    }
-  };
+  // const handleFontSizeChange = (font) => {
+  //   setFont(font);
+  // };
+  // const handleCalls = () =>{
+  //   setFont(fontSize)
+  // }
+
   return (
     <View style={styles.header}>
       <TouchableOpacity
@@ -54,9 +62,11 @@ export default function Header() {
           />
           <TextInput
             style={styles.input}
-            placeholder="What is your Emergency?"
+            placeholder="Enter font size"
             placeholderTextColor="black"
+            onChangeText={(text) => setFont(text)}
           />
+          <Button title="Apply" onPress={() => changeFontSize(font)} />
         </View>
       </Modal>
 
@@ -117,7 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: 100,
-    marginTop: -50,
+    marginTop: -60,
     backgroundColor: "#6495ED",
     //babyblue: 89CFF0
     justifyContent: "center",

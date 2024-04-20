@@ -18,6 +18,7 @@ import { useState, useEffect, Component } from "react";
 import HTML, { buildTREFromConfig } from "react-native-render-html";
 import Header from "./components/Header";
 import DropDownComponent from "./components/DropDownComponent";
+import { FontSizeProvider } from "./Context/FontSizeContext";
 
 export default function App() {
   const { width } = useWindowDimensions();
@@ -85,8 +86,10 @@ export default function App() {
         source={require("./assets/med.png")}
         style={styles.backgroundImage}
       />
-      <Header></Header>
-      <DropDownComponent onChange={handleDropDownChange} />
+      <FontSizeProvider>
+        <Header />
+        <DropDownComponent onChange={handleDropDownChange} />
+      </FontSizeProvider>
 
       <View style={styles.listContainer}>
         <FlatList
