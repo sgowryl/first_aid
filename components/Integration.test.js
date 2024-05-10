@@ -1,11 +1,9 @@
-
 import React from "react";
 import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
-import App from "../App"; 
+import App from "../App";
 
 // Test suite for integration testing
 describe("Integration Tests", () => {
- 
   test("renders the main application with header and dropdown component", async () => {
     const { getByTestId } = render(<App />);
 
@@ -52,7 +50,5 @@ describe("Integration Tests", () => {
 
     // Simulate clicking on the 'Call NHS' button
     fireEvent.press(callNHSButton);
-
-    // Add further assertions for handling the calling functionality
   });
 });
