@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect, Component } from "react";
 import {
   StyleSheet,
@@ -827,8 +828,7 @@ const data = [
   },
   {
     label: "203",
-    value:
-      "Card, fontSize=fontSizeiac catheterisation and coronary angiography",
+    value: "Cardiac catheterisation and coronary angiography",
   },
   {
     label: "204",
@@ -5074,12 +5074,18 @@ export default function DropDownComponent() {
   }, [value]);
   const fetchData = async () => {
     try {
-      console.log(value);
-      const response = await fetch(`https://api.nhs.uk/conditions/${value}`, {
-        headers: {
-          "subscription-key": "13a43248355e41c0beedcd663fc14c2b",
-        },
-      });
+      const formattedValue = value.includes(" ")
+        ? value.replace(/\s+/g, "-")
+        : value;
+      console.log(formattedValue);
+      const response = await fetch(
+        `https://api.nhs.uk/conditions/${formattedValue}`,
+        {
+          headers: {
+            "subscription-key": "13a43248355e41c0beedcd663fc14c2b",
+          },
+        }
+      );
       //const data = await response.json();
       const result = await response.json();
       console.log(fontSize);

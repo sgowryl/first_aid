@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Text,
@@ -176,5 +177,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     borderColor: "white",
+  },
+  input: {
+    fontSize: 20,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 10,
   },
 });

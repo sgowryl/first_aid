@@ -1,4 +1,3 @@
-import React from "react";
 import {
   StyleSheet,
   Text,
@@ -20,11 +19,23 @@ import HTML, { buildTREFromConfig } from "react-native-render-html";
 import Header from "./components/Header";
 import DropDownComponent from "./components/DropDownComponent";
 import { FontSizeProvider } from "./Context/FontSizeContext";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+import { Audio } from "expo-av";
 export default function App() {
+  const handleOnPressIn = () => {
+    // Logic to execute when the press event starts
+    console.log("Pressed in");
+  };
+  const handleOnPressOut = () => {
+    // Logic to execute when the press event ends
+    console.log("Pressed out");
+  };
+  const [isFetching, setIsFetching] = useState(false);
   const { width } = useWindowDimensions();
   const [name, setName] = useState("");
   const [postList, setPostList] = useState([]);
+  const [isRecording, setIsRecording] = useState(false);
 
   useEffect(() => {
     if (name !== "") {
@@ -58,12 +69,14 @@ export default function App() {
         headline: headline,
         text: mappedData[index][0].text,
       }));
-      //console.log(mappedResults);
       setPostList(mappedResults);
     } catch (e) {
       console.log(e);
     }
   };
+  const ENCODING = "LINEAR16";
+  const SAMPLE_RATE_HERTZ = 41000;
+  const LANGUAGE = "en-US";
   const handleInputChange = (text) => {
     setName(text);
     //console.log(text);
@@ -80,6 +93,78 @@ export default function App() {
   const handleDropDownChange = (value) => {
     setName(value);
   };
+  const recordingOptions = {
+    // android not currently in use, but parameters are required
+    android: {
+      extension: ".m4a",
+      outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
+      audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
+      sampleRate: 44100,
+      numberOfChannels: 2,
+      bitRate: 128000,
+    },
+    ios: {
+      extension: ".wav",
+      audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH,
+      sampleRate: 44100,
+      numberOfChannels: 1,
+      bitRate: 128000,
+      linearPCMBitDepth: 16,
+      linearPCMIsBigEndian: false,
+      linearPCMIsFloat: false,
+    },
+  };
+
+  startRecording = async () => {
+    const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+    if (status !== "granted") return;
+
+    this.setState({ isRecording: true });
+    // some of these are not applicable, but are required
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: true,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: true,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+      playThroughEarpieceAndroid: true,
+    });
+    const recording = new Audio.Recording();
+    try {
+      await recording.prepareToRecordAsync(recordingOptions);
+      await recording.startAsync();
+    } catch (error) {
+      console.log(error);
+      this.stopRecording();
+    }
+    this.recording = recording;
+  };
+  getTranscription = async () => {
+    this.setState({ isFetching: true });
+    try {
+      const info = await FileSystem.getInfoAsync(this.recording.getURI());
+      console.log(`FILE INFO: ${JSON.stringify(info)}`);
+      const uri = info.uri;
+      const formData = new FormData();
+      formData.append("file", {
+        uri,
+        type: "audio/x-wav",
+        // could be anything
+        name: "speech2text",
+      });
+      const response = await fetch(config.CLOUD_FUNCTION_URL, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      this.setState({ query: data.transcript });
+    } catch (error) {
+      console.log("There was an error", error);
+      this.stopRecording();
+      this.resetRecording();
+    }
+    this.setState({ isFetching: false });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,7 +176,26 @@ export default function App() {
         <Header />
         <DropDownComponent onChange={handleDropDownChange} />
       </FontSizeProvider>
-
+      <View style={styles.voicecontainer}>
+        {isRecording && (
+          <FadeInView>
+            <FontAwesome name="microphone" size={32} color="#48C9B0" />
+          </FadeInView>
+        )}
+        {!isRecording && (
+          <FontAwesome name="microphone" size={32} color="#48C9B0" />
+        )}
+        <Text style={styles.voicetext}>Voice Search</Text>
+        <TouchableOpacity
+          style={styles.voiceButton}
+          onPressIn={handleOnPressIn}
+          onPressOut={handleOnPressOut}
+        >
+          {isFetching && <ActivityIndicator color="#ffffff" />}
+          {!isFetching && <Text>Hold for Voice Search</Text>}
+        </TouchableOpacity>
+      </View>
+      <View style={{ paddingHorizontal: 20 }}></View>
       <View style={styles.listContainer}>
         <FlatList
           data={postList}
